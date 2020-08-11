@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
-import re
 import sys
 import shlex
 from models.base_model import BaseModel
@@ -128,11 +127,14 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args_split[0]]()
         new_dict = {}
 
-        expression = '\w+=\W?[a-zA-z0-9.?]*\W?'
-        list_matches = re.findall(expression, args)
-        for exp in list_matches:
-            exp = exp.replace(" ", "")
-            temporal = exp.split('=')
+        # expression = '\w+=\W?[a-zA-z0-9.?]*\W?'
+        # list_matches = re.findall(expression, args)
+        # for exp in list_matches:
+
+        for word in args_split[1:]:    
+            # word = word.replace("\"", "")
+            # exp = exp.replace(" ", "")
+            temporal = word.split('=')
             try:
                 temporal[1] = eval(temporal[1])
             except (TypeError, ValueError):
