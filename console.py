@@ -127,10 +127,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args_split[0]]()
         new_dict = {}
 
-        # expression = '\w+=\W?[a-zA-z0-9.?]*\W?'
-        # list_matches = re.findall(expression, args)
-        # for exp in list_matches:
-
         for word in args_split[1:]:
             temporal = word.split('=')
             try:
