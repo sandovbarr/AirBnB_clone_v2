@@ -121,31 +121,32 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-        # elif args_split[0] not in HBNBCommand.classes:
-        #    print("** class doesn't exist **")
-        #    return
-        try:
-            new_instance = HBNBCommand.classes[args_split[0]]()
-            new_dict = {}
-
-            expression = '\w+=\W?[a-zA-z0-9.?]*\W?'
-            list_matches = re.findall(expression, args)
-            for exp in list_matches:
-                exp = exp.replace(" ", "")
-                temporal = exp.split('=')
-                temporal[1] = eval(temporal[1])
-                new_dict[temporal[0]] = temporal[1]
-
-            for k, v in new_dict.items():
-                if type(v) is str:
-                    v = v.replace("_", " ")
-                if hasattr(new_instance, k):
-                    setattr(new_instance, k, v)
-
-            storage.save()
-            print(new_instance.id)
-        except Exception as e:
+        elif args_split[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            return
+
+        new_instance = HBNBCommand.classes[args_split[0]]()
+        new_dict = {}
+
+        expression = '\w+=\W?[a-zA-z0-9.?]*\W?'
+        list_matches = re.findall(expression, args)
+        for exp in list_matches:
+            exp = exp.replace(" ", "")
+            temporal = exp.split('=')
+            try:
+                temporal[1] = eval(temporal[1])
+            except (TypeError, ValueError):
+                pass
+            new_dict[temporal[0]] = temporal[1]
+
+        for k, v in new_dict.items():
+            if type(v) is str:
+                v = v.replace("_", " ")
+            if hasattr(new_instance, k):
+                setattr(new_instance, k, v)
+
+        storage.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
