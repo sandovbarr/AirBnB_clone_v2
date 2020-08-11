@@ -139,7 +139,8 @@ class HBNBCommand(cmd.Cmd):
         for k, v in new_dict.items():
             if type(v) is str:
                 v = v.replace("_", " ")
-            setattr(new_instance, k, v)
+            if hasattr(new_instance, k):
+                setattr(new_instance, k, v)
 
         storage.save()
         print(new_instance.id)
