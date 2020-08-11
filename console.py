@@ -132,8 +132,6 @@ class HBNBCommand(cmd.Cmd):
         # for exp in list_matches:
 
         for word in args_split[1:]:
-            # word = word.replace("\"", "")
-            # exp = exp.replace(" ", "")
             temporal = word.split('=')
             try:
                 temporal[1] = eval(temporal[1])
