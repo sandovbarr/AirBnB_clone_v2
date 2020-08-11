@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
         # list_matches = re.findall(expression, args)
         # for exp in list_matches:
 
-        for word in args_split[1:]:    
+        for word in args_split[1:]:
             # word = word.replace("\"", "")
             # exp = exp.replace(" ", "")
             temporal = word.split('=')
