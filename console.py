@@ -116,34 +116,38 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        args_split = args.split()
-        if not args_split:
+        '''
+            Create a new instance of class BaseModel and saves it
+            to the JSON file.
+        '''
+        if len(args) == 0:
             print("** class name missing **")
             return
-        elif args_split[0] not in HBNBCommand.classes:
+        try:
+            args = self.splitter(args)
+            new_instance = eval(args[0])()
+            for x in args[1:]:
+                n_ag = x.split("=")
+                if hasattr(new_instance, n_ag[0]):
+                    try:
+                        n_ag[1] = eval(n_ag[1])
+                    except(IndexError, ValueError):
+                        pass
+                    if type(n_ag[1]) is str:
+                        n_ag[1] = n_ag[1].replace("_", " ")
+                    setattr(new_instance, n_ag[0], n_ag[1])
+            new_instance.save()
+            print(new_instance.id)
+        except NameError:
             print("** class doesn't exist **")
-            return
 
-        new_instance = HBNBCommand.classes[args_split[0]]()
-        new_dict = {}
-
-        expression = '\w+=\W?[a-zA-z0-9.?]*\W?'
-        list_matches = re.findall(expression, args)
-        for exp in list_matches:
-            exp = exp.replace(" ", "")
-            temporal = exp.split('=')
-            temporal[1] = eval(temporal[1])
-            new_dict[temporal[0]] = temporal[1]
-
-        for k, v in new_dict.items():
-            if type(v) is str:
-                v = v.replace("_", " ")
-            if hasattr(new_instance, k):
-                setattr(new_instance, k, v)
-
-        storage.save()
-        print(new_instance.id)
+    def splitter(self, line):
+        """ Function to split argument lines"""
+        lex = shlex.shlex(line)
+        lex.quotes = '"'
+        lex.whitespace_split = True
+        lex.commenters = ''
+        return list(lex)
 
     def help_create(self):
         """ Help information for the create method """
