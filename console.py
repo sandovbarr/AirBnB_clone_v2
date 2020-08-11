@@ -130,9 +130,6 @@ class HBNBCommand(cmd.Cmd):
         for word in args_split[1:]:
             temporal = word.split('=')
             temporal[1] = eval(temporal[1])
-            # try:
-            # except (TypeError, ValueError):
-            #     pass
             new_dict[temporal[0]] = temporal[1]
 
         for k, v in new_dict.items():
