@@ -132,12 +132,13 @@ class HBNBCommand(cmd.Cmd):
         list_matches = re.findall(expression, args)
         for exp in list_matches:
             exp = exp.replace(" ", "")
-            exp = exp.replace("_", " ")
             temporal = exp.split('=')
             temporal[1] = eval(temporal[1])
             new_dict[temporal[0]] = temporal[1]
 
         for k, v in new_dict.items():
+            if type(v) is str:
+                v = v.replace("_", " ")
             setattr(new_instance, k, v)
 
         storage.save()
