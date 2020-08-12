@@ -40,7 +40,6 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -57,7 +56,6 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Delete obj from __objects if it’s inside"""
-
         cls_name = type(obj).__name__ + '.' + obj.id
         if cls_name in FileStorage.__objects.keys():
             FileStorage.__objects.pop(cls_name)
