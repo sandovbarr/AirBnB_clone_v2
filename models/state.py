@@ -4,7 +4,7 @@ import os
 import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 
 class State(BaseModel, Base):
@@ -26,5 +26,5 @@ class State(BaseModel, Base):
                         ins_ret_list.append(obj)
             return ins_ret_list
     else:
-        cities = relationship('City', cascade="all, delete-orphan",
+        cities = relationship('City', cascade="all, delete",
                               backref='state')

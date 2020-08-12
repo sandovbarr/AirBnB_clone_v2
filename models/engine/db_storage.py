@@ -4,6 +4,7 @@ from sqlalchemy import (create_engine)
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 from os import getenv
+import os
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.place import Place
@@ -17,12 +18,11 @@ class DBStorage:
     ''' create a manage session for MySQL db'''
     __engine = None
     __session = None
-
     classes = {
-        'BaseModel': BaseModel, 'User': User, 'Place': Place,
-        'State': State, 'City': City, 'Amenity': Amenity,
-        'Review': Review
-        }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
 
     def __init__(self):
         ''' Constructor '''
@@ -39,10 +39,10 @@ class DBStorage:
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(user, passwd, host, db),
                                       pool_pre_ping=True)
-        Base.metadata.create_all(self.__engine)
 
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
 
@@ -57,11 +57,11 @@ class DBStorage:
                 r_dic[k] = res
         else:
             for k, v in DBStorage.classes.items():
-                query = self.__session.query(v).all()
-                for res in query:
-                    k = res.__class__.__name__ + '.' + res.id
-                    r_dic[k] = res
-
+                if not isinstance(v, type(BaseModel)):
+                    query = self.__session.query(v).all()
+                    for res in query:
+                        k = res.__class__.__name__ + '.' + res.id
+                        r_dic[k] = res
         return r_dic
 
     def new(self, obj):
@@ -86,3 +86,28 @@ class DBStorage:
     def close(self):
         ''' Close the session '''
         self.__session.close()
+
+    # def all(self, cls=None):
+    #     """returns all objects of cls"""
+    #     from models.state import State
+    #     from models.city import City
+    #     from models.user import User
+    #     from models.amenity import Amenity
+    #     from models.place import Place
+    #     from models.review import Review
+
+    #     class_list = [
+    #         State,
+    #         City,
+    #         User,
+    #         Place,
+    #         Review,
+    #         Amenity
+    #     ]
+    #     rows = []
+    #     if cls:
+    #         rows = self.__session.query(cls)
+    #     else:
+    #         for cls in class_list:
+    #             rows += self.__session.query(cls)
+    #     return {type(v).__name__ + "." + v.id: v for v in rows}
