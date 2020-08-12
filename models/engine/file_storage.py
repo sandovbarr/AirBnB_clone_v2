@@ -59,5 +59,6 @@ class FileStorage:
         """Delete obj from __objects if it’s inside"""
 
         cls_name = type(obj).__name__ + '.' + obj.id
-        FileStorage.__objects.pop(cls_name)
-        self.save()
+        if cls_name in FileStorage.__objects.keys():
+            FileStorage.__objects.pop(cls_name)
+            self.save()
