@@ -219,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
             instances based or not on the class name.
             Ex: $ all BaseModel or $ all.
         '''
-        all_objs = models.storage.all()
+        all_objs = models.storage.all(cls_name)
         l_eq = []
         if cls_name and cls_name not in HBNBCommand.classes.keys():
             print("** class doesn't exist **")
