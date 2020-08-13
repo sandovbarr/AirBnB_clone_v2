@@ -20,7 +20,6 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         if kwargs:
-            print(kwargs)
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
