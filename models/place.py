@@ -1,11 +1,19 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship, backref
 import os
 import models
+
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -24,7 +32,9 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         reviews = relationship('Review', cascade='all, delete',
                                backref='place')
-        amenity_ids = []
+        amenities = relationship('Amenity',
+                                 secondary='place_amenity',
+                                 viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -51,3 +61,22 @@ class Place(BaseModel, Base):
                     if v.place_id == self.id:
                         reviews_return.append(v)
             return reviews_return
+
+        @property
+        def amenities(self):
+            '''
+                Returns the list of Amenity instances based
+                on the attribute amenity_ids that contains all
+                Amenity.id linked to the Place
+            '''
+            reviews_return = []
+            for k, v in models.storage.all().items():
+                if v.___class__.__name__ == 'Amenity':
+                    if v.place_id == self.id:
+                        reviews_return.append(v)
+            return reviews_return
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            if isinstance(obj, Amenity):
+                self.amenity_ids.append(obj.id)
