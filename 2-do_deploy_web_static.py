@@ -5,7 +5,7 @@
     the function do_deploy:
 '''
 import os
-from fabric.api import *
+from fabric.api import local, run, env, put, sudo
 from datetime import datetime
 
 
