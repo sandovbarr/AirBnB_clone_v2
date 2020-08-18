@@ -53,6 +53,9 @@ def do_deploy(archive_path):
         run('sudo ln -sf /data/web_static/releases/{} /data/web_static/current'
             .format(fname_no_ext))
 
+        run('sudo rm -rf /data/web_static/releases/{}/web_static/'
+            .format(fname_no_ext))
+
         print('New version deployed!')
         return True
     except Exception:
