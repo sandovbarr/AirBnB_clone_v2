@@ -5,10 +5,9 @@
     the function do_deploy:
 '''
 import os
-from fabric.api import local, run, env, put, sudo
+from fabric.api import local, env
+from fabric.operations import run, put, sudo
 from datetime import datetime
-
-
 env.hosts = ['35.243.207.104', '35.196.142.184']
 
 
@@ -34,27 +33,24 @@ def do_deploy(archive_path):
         Returns False if the file at the path
         archive_path doesn’t exist
     '''
-    if os.path.exists(archive_path):
-        put(archive_path, '/tmp/')
-        path_split = archive_path.split('/')
-        filename = path_split[-1]
-        filesplit = filename.split('.')
-        fname_no_ext = filesplit[0]
-        uncompress_path = '/data/web_static/releases/{}'.format(fname_no_ext)
+    if (os.path.isfile(archive_path) is False):
+        return False
 
-        run('sudo mkdir -p {}'.format(uncompress_path))
-        run('sudo tar -zxvf /tmp/{} -C {}/'.format(filename, uncompress_path))
+    try:
 
-        run('sudo rm /tmp/{}'.format(filename))
-        run('sudo rm /data/web_static/current')
-
-        run('sudo ln -sf /data/web_static/releases/{} /data/web_static/current'
-            .format(fname_no_ext))
-
-        run('sudo rm -rf /data/web_static/releases/{}/web_static/'
-            .format(fname_no_ext))
-
+        fname = archive_path.split("/")[-1]
+        uncompressed_path = ("/data/web_static/releases/" + fname.split(".")[0])
+        put(archive_path, "/tmp/")
+        run("sudo mkdir -p {}".format(uncompressed_path))
+        run("sudo tar -xzf /tmp/{} -C {}".
+            format(fname, uncompressed_path))
+        run("sudo rm /tmp/{}".format(fname))
+        run("sudo mv {}/web_static/* {}/".format(uncompressed_path, uncompressed_path))
+        run("sudo rm -rf {}/web_static".format(uncompressed_path))
+        run('sudo rm -rf /data/web_static/current')
+        run("sudo ln -s {} /data/web_static/current".format(uncompressed_path))
         print('New version deployed!')
         return True
-    else:
+
+    except Exception:
         return False
