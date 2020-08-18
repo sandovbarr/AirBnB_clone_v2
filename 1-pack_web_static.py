@@ -20,7 +20,7 @@ def do_pack():
     if not path.exists('versions'):
         local('mkdir versions')
     formater = '%Y%m%d%H%M%S'
-    final_file = 'web_static_{}.tgz'\
+    final_file = 'versions/web_static_{}.tgz'\
                  .format(datetime.now().strftime(formater))
     local('tar -czvf {} web_static'.format(final_file))
     return final_file
