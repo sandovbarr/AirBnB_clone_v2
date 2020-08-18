@@ -10,7 +10,6 @@ from fabric.operations import run, put, sudo
 env.hosts = ['35.243.207.104', '35.196.142.184']
 
 
-
 def do_pack():
     '''
         function to generate a .tgz archive
