@@ -41,8 +41,8 @@ def do_deploy(archive_path):
         path_split = archive_path.split('/')
         filename = path_split[-1]
         filesplit = filename.split('.')
-        filename_no_ext = filesplit[0]
-        uncompress_path = '/data/web_static/releases/{}'.format(filename_no_ext)
+        fname_no_ext = filesplit[0]
+        uncompress_path = '/data/web_static/releases/{}'.format(fname_no_ext)
 
         run('sudo mkdir -p {}'.format(uncompress_path))
         run('sudo tar -zxvf /tmp/{} -C {}/'.format(filename, uncompress_path))
@@ -51,7 +51,7 @@ def do_deploy(archive_path):
         run('sudo rm /data/web_static/current')
 
         run('sudo ln -sf /data/web_static/releases/{} /data/web_static/current'
-            .format(filename_no_ext))
+            .format(fname_no_ext))
         return True
     except Exception:
         return False
