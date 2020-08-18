@@ -9,7 +9,7 @@ from fabric.api import *
 from datetime import datetime
 
 
-env.hosts = ['ubuntu@35.243.207.104', 'ubuntu@35.196.142.184']
+env.hosts = ['35.243.207.104', '35.196.142.184']
 
 
 def do_pack():
@@ -34,7 +34,7 @@ def do_deploy(archive_path):
         Returns False if the file at the path
         archive_path doesn’t exist
     '''
-    if not os.path.exists(archive_path):
+    if os.path.exists(archive_path) is False:
         return False
     try:
         put(archive_path, '/tmp/')
