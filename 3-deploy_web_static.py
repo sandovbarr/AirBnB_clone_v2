@@ -64,6 +64,6 @@ def deploy():
     if (os.path.isfile(created_archive) is False):
         return False
     try:
-        do_deploy(created_archive)
+        return(do_deploy(created_archive))
     except Exception:
         return False
