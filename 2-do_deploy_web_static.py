@@ -45,7 +45,7 @@ def do_deploy(archive_path):
         uncompress_path = '/data/web_static/releases/' + filename_no_ext
 
         run('sudo mkdir -p {}'.format(uncompress_path))
-        run('tar -xvf {} -C {}'.format('/tmp/' + filename, uncompress_path))
+        run('sudo tar -xvf {} -C {}'.format('/tmp/' + filename, uncompress_path))
 
         run('sudo rm /tmp/{}'.format(filename))
         rum('sudo rm /data/web_static/current')
