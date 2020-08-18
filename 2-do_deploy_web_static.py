@@ -34,9 +34,7 @@ def do_deploy(archive_path):
         Returns False if the file at the path
         archive_path doesn’t exist
     '''
-    if os.path.exists(archive_path) is False:
-        return False
-    try:
+    if os.path.exists(archive_path):
         put(archive_path, '/tmp/')
         path_split = archive_path.split('/')
         filename = path_split[-1]
@@ -58,5 +56,5 @@ def do_deploy(archive_path):
 
         print('New version deployed!')
         return True
-    except Exception:
+    else:
         return False
