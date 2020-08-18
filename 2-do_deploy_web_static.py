@@ -42,10 +42,10 @@ def do_deploy(archive_path):
         filename = path_split[-1]
         filesplit = filename.split('.')
         filename_no_ext = filesplit[0]
-        uncompress_path = '/data/web_static/releases/' + filename_no_ext
+        uncompress_path = '/data/web_static/releases/{}'.format(filename_no_ext)
 
         run('sudo mkdir -p {}'.format(uncompress_path))
-        run('sudo tar -xvf {} -C {}'.format('/tmp/' + filename, uncompress_path))
+        run('sudo tar -zxvf /tmp/{} -C {}/'.format(filename, uncompress_path))
 
         run('sudo rm /tmp/{}'.format(filename))
         rum('sudo rm /data/web_static/current')
