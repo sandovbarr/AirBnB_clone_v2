@@ -4,6 +4,7 @@
     your web servers, using the function deploy:
 """
 import os.path
+from datetime import datetime
 from fabric.api import *
 from fabric.operations import run, put, sudo
 env.hosts = ['35.243.207.104', '35.196.142.184']
@@ -18,7 +19,7 @@ def do_pack():
         if the archive has been correctly generated.
         Otherwise, it should return None.
     '''
-    if not path.exists('versions'):
+    if not os.path.exists('versions'):
         local('mkdir versions')
     formater = '%Y%m%d%H%M%S'
     final_file = 'versions/web_static_{}.tgz'\
