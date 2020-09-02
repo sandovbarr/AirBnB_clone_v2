@@ -50,8 +50,7 @@ class DBStorage:
         ''' Query all objects in current db '''
         r_dic = {}
         if cls is not None:
-            if cls in DBStorage.classes.keys():
-                query = self.__session.query(DBStorage.classes.get(cls)).all()
+            query = self.__session.query(cls)
             for res in query:
                 k = res.__class__.__name__ + '.' + res.id
                 r_dic[k] = res
