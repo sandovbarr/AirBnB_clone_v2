@@ -10,7 +10,7 @@ app = Flask(__name__)
 def all_states():
     ''' return all states '''
     states = storage.all(State).values()
-    return (render_template('9-states.html', states=states))
+    return (render_template('7-states_list.html', states=states))
 
 
 @app.route('/states/<id>', strict_slashes=False)
